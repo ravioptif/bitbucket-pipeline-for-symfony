@@ -1,1 +1,10 @@
-ddfghdf
+image: php:8.4
+
+pipelines:
+  custom:
+    manual-deploy-to-develop:
+      - step:
+          name: "Manual Deploy to Development Server"
+          deployment: Develop
+          script:
+            - bash deploy.sh
