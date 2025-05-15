@@ -1,1 +1,53 @@
+1.Pipeline Config Files
+    .bitbucket-pipelines.yml: Bitbucket pipeline config 
+    deploy.sh: Bash script to automate deployment
 
+2.Environments
+
+    TEST
+    STAGING
+    PRODUCTION
+
+3.Required Bitbucket Variables for deployment
+  Create below variables in bitbucket at deployment level not repository level as we have TEST, Stage etc..
+
+    APP_ENV : Symfony app environment
+    APP_SECRET : Symfony secret
+    DATABASE_URL : Database DSN
+    API_BASE_URL : Base API URL
+    JWT_PASSPHRASE : JWT passphrase
+    JWT_PRIVATE_PEM : Base64-encoded private.pem
+    JWT_PUBLIC_PEM : Base64-encoded public.pem
+    SERVER_HOST : SSH host of the target server
+    SERVER_USER : SSH username
+    SERVER_REMOTE_PATH : Base path on the server
+    DEPLOY_DIR_NAME : Target deployment dir name
+    SERVER_SSH_KEY : SSH private key (no passphrase)
+
+4.Deploy Steps
+
+    Select Pipeline
+    In Bitbucket:
+    Go to Pipelines → Run Pipeline → Custom
+    Select environment:
+        manual-deploy-to-develop ✅ (runs tests)
+        manual-deploy-to-production 🚫 (skips tests)
+    Click Run
+
+5.Script Workflow (deploy.sh)
+
+    Sets up SSH and connects to server
+    Uploads code to a temporary directory
+    Installs Composer packages
+    Creates .env.local.php
+    Decodes and setup JWT keys
+    Runs PHPUnit tests (if RUN_TESTS=true)
+    Syncs files to live deployment directory
+
+
+========================
+SSH Key Setup
+========================
+1-generate ssh key on server
+2-convert ssh key to base64 string
+3-store the base64 ssh key in bitbucket variables "SERVER_SSH_KEY"
