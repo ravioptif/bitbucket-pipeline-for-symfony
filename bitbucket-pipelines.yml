@@ -4,7 +4,16 @@ pipelines:
   custom:
     manual-deploy-to-develop:
       - step:
-          name: "Manual Deploy to Development Server"
-          deployment: Develop
+          name: "Manual Deploy to Test Server"
+          deployment: TEST
           script:
+            - export RUN_UNIT_TESTS=true
+            - bash deploy.sh
+
+    manual-deploy-to-production:
+      - step:
+          name: "Manual Deploy to Production Server"
+          deployment: PRODUCTION
+          script:
+            - export RUN_UNIT_TESTS=true
             - bash deploy.sh
